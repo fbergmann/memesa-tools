@@ -70,9 +70,9 @@ data_dir = os.path.join(cDir, 'data', model_name)
 model_dir = os.path.join(data_dir,'models','sbml')
 work_dir = os.path.join(data_dir,'models','h-format')
 
-from pyscescbm.CBVersion import __DEBUG__, __version__
-from pyscescbm import CBRead, CBWrite, CBTools
-from pyscescbm import CBSolver as slv
+from cbmpy.CBVersion import __DEBUG__, __version__
+from cbmpy import CBRead, CBWrite, CBTools
+from cbmpy import CBSolver as slv
 
 work_dir = os.path.join(cDir, work_dir)
 if not os.path.exists(work_dir):

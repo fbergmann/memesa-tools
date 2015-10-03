@@ -81,8 +81,8 @@ BIG_FILE = True
 import numpy, sympy, h5py,gc
 gc.enable()
 
-from pyscescbm.CBVersion import __DEBUG__, __version__
-from pyscescbm import CBRead, CBWrite, CBTools,  CBSolver as slv
+from cbmpy.CBVersion import __DEBUG__, __version__
+from cbmpy import CBRead, CBWrite, CBTools,  CBSolver as slv
 
 model_dir = os.path.join(cDir, 'data', model_name,'models_subnetwork','sbml')
 H_format_dir = os.path.join(cDir,'data', model_name,'models_subnetwork','h-format')

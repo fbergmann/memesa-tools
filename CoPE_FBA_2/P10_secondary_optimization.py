@@ -67,7 +67,7 @@ if model_name.endswith('.xml'):
 
 cDir = os.path.dirname(os.path.abspath(os.sys.argv[0]))
 from scripts import tools
-import pyscescbm as cbm
+import cbmpy as cbm
 
 data_dir = os.path.join(cDir, 'data', model_name)
 model_dir = os.path.join(data_dir,'models','sbml') 

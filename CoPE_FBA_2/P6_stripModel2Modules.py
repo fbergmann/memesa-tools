@@ -85,7 +85,7 @@ def addFBAobjective(model,reaction_id,objective='maximize'):
     add an objective to the LP problem    
     
     Input:
-      - *model*: (pyscescbm object)
+      - *model*: (cbmpy object)
       - *reaction_id*: (string)
       - *objective*: (string) [default= 'maximize']
     """
@@ -266,7 +266,7 @@ cytosol_abbrev = 'cytosol'
 cDir = os.path.dirname(os.path.abspath(os.sys.argv[0]))
     
 import os,copy,sys, numpy as np
-import pyscescbm as cbm
+import cbmpy as cbm
 
 _HAVE_SYMPY_ = None
 try:

@@ -71,7 +71,7 @@ elif "<fba:listOfConstraints>" in M.getAnnotationString():
 else:
     print('I suspect this is a COBRA file, attempting to convert')
     try:
-        import pyscescbm as cbm
+        import cbmpy as cbm
     except ImportError:
         print('\nI require PySCeS-CBMPy: http://cbmpy.sourceforge.net\n')
     cobramod = cbm.readCOBRASBML("{0:s}.xml".format(model_name))

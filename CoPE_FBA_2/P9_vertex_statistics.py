@@ -489,7 +489,7 @@ def getVariableNetworkStats():
     return D_IO,L_variable_lengths,L_variable_sumAbsFluxes, L_variable_costs,nvertices_network,D_stats
 
 
-import pyscescbm as cbm
+import cbmpy as cbm
 if DO_PLOTTING:
     import matplotlib as mpl, matplotlib.pyplot as plt
     import matplotlib.mlab as mlab

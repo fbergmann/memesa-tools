@@ -35,7 +35,7 @@ Last Change: February 25, 2015
 from __future__ import division, print_function, absolute_import
 
 import os,re,sys,h5py,numpy as np,sys,getopt
-import pyscescbm as cbm
+import cbmpy as cbm
 
 ### DEFINE USER INPUT ###
 

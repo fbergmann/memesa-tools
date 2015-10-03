@@ -15,7 +15,7 @@ Last Change: February 27, 2015
 
 from __future__ import division, print_function, absolute_import
 import os,sys,time, sympy
-import pyscescbm as cbm
+import cbmpy as cbm
 from . import tools
 
 cDir = os.getcwd()    

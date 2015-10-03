@@ -75,10 +75,10 @@ for opt, arg in myopts:
 if model_name.endswith('.xml'):
     model_name = model_name.replace('.xml','')
 
-from pyscescbm.CBVersion import __DEBUG__, __version__
-import pyscescbm.fluxmodules.fluxmodules as fmod
-from pyscescbm import CBRead, CBWrite, CBTools,CBMultiCore
-from pyscescbm import CBSolver as slv
+from cbmpy.CBVersion import __DEBUG__, __version__
+import cbmpy.fluxmodules.fluxmodules as fmod
+from cbmpy import CBRead, CBWrite, CBTools,CBMultiCore
+from cbmpy import CBSolver as slv
 
 model_file = model_name + '.xml'
 data_dir = os.path.join(cDir, 'data', model_name)

@@ -70,9 +70,9 @@ for opt, arg in myopts:
 if model_name.endswith('.xml'):
     model_name = model_name.replace('.xml','')
      
-from pyscescbm.CBVersion import __DEBUG__, __version__
-from pyscescbm import CBRead, CBWrite, CBTools
-from pyscescbm import CBSolver as slv
+from cbmpy.CBVersion import __DEBUG__, __version__
+from cbmpy import CBRead, CBWrite, CBTools
+from cbmpy import CBSolver as slv
 
 ### Active script ###
 

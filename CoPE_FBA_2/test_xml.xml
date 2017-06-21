@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fba:fluxBalance xmlns:fba="http://www.sbml.org/sbml/level3/version1/fba/version1">
+    <fba:listOfConstraints>
+        <fba:constraint fba:operation="greaterEqual" fba:reaction="R15" fba:value="0.0" id="R15_lb"/>
+        <fba:constraint fba:operation="greaterEqual" fba:reaction="R12" fba:value="0.0" id="R12_lb"/>
+        <fba:constraint fba:operation="lessEqual" fba:reaction="R_module_input" fba:value="1.0" id="R_module_input_ub"/>
+        <fba:constraint fba:operation="greaterEqual" fba:reaction="R14_fwd" fba:value="0.0" id="R14_fwd_lower_bnd"/>
+        <fba:constraint fba:operation="greaterEqual" fba:reaction="R14_rev" fba:value="0.0" id="R14_rev_lower_bnd"/>
+        <fba:constraint fba:operation="greaterEqual" fba:reaction="R13_fwd" fba:value="0.0" id="R13_fwd_lower_bnd"/>
+        <fba:constraint fba:operation="greaterEqual" fba:reaction="R13_rev" fba:value="0.0" id="R13_rev_lower_bnd"/>
+        <fba:constraint fba:operation="greaterEqual" fba:reaction="R_module_output" fba:value="0.0" id="R_module_output_lower_bnd"/>
+    </fba:listOfConstraints>
+    <fba:listOfObjectives fba:activeObjective="maxR_module_output">
+        <fba:objective fba:type="maximize" id="maxR_module_output">
+            <fba:listOfFluxes>
+                <fba:fluxObjective fba:coefficient="1.0" fba:reaction="R_module_output"/>
+            </fba:listOfFluxes>
+        </fba:objective>
+    </fba:listOfObjectives>
+</fba:fluxBalance>

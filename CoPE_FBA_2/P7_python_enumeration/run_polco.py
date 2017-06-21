@@ -316,8 +316,9 @@ class TimoTimo():
                        ### Determine the rank of the submatrix which must be full rank
                        print("* So {0:d} of the inequalities were tight. Checking the rank of this set ...".format(ntight))
                        outfile.write("* So {0:d} of the inequalities were tight. Checking the rank of this set ...\n".format(ntight))
+                       #bgoli 2017 here I do an explicit cast to float64 for the svd evaluation
                        Arr_sub_Ab = np.array(Arr_sub_Ab)
-                       u_, s_, v_ = np.linalg.svd(Arr_sub_Ab)
+                       u_, s_, v_ = np.linalg.svd(Arr_sub_Ab.astype('float64'))
                        matrix_rank = np.sum(s_ > 1e-10)
                        print("* The submatrix has rank {0:d}".format(matrix_rank))
                        outfile.write("* The submatrix has rank {0:d}\n".format(matrix_rank))                      

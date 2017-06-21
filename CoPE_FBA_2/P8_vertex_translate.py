@@ -78,11 +78,17 @@ WRITE_VERTEX_ARRAY_FULL = False # once only small models
 BIG_FILE = True
 # end userdata here #
 
-import numpy, sympy, h5py,gc
+import numpy, sympy, h5py, gc
 gc.enable()
 
-from pyscescbm.CBVersion import __DEBUG__, __version__
-from pyscescbm import CBRead, CBWrite, CBTools,  CBSolver as slv
+# bgoli 2017-06-21
+# CBMPy compatability changes
+import cbmpy
+__DEBUG__ = cbmpy.CBConfig.__CBCONFIG__['DEBUG']
+__version__ = cbmpy.CBConfig.current_version()
+import cbmpy.fluxmodules.fluxmodules as fmod
+from cbmpy import CBRead, CBWrite, CBTools, CBMultiCore
+from cbmpy import CBSolver as slv
 
 model_dir = os.path.join(cDir, 'data', model_name,'models_subnetwork','sbml')
 H_format_dir = os.path.join(cDir,'data', model_name,'models_subnetwork','h-format')

@@ -488,8 +488,17 @@ def getVariableNetworkStats():
     D_stats['maxC'] = maxCost
     return D_IO,L_variable_lengths,L_variable_sumAbsFluxes, L_variable_costs,nvertices_network,D_stats
 
+# bgoli 2017-06-21
+import cbmpy as cbm
 
-import pyscescbm as cbm
+#~ # CBMPy compatability changes
+#~ import cbmpy
+#~ __DEBUG__ = cbmpy.CBConfig.__CBCONFIG__['DEBUG']
+#~ __version__ = cbmpy.CBConfig.current_version()
+#~ import cbmpy.fluxmodules.fluxmodules as fmod
+#~ from cbmpy import CBRead, CBWrite, CBTools, CBMultiCore
+#~ from cbmpy import CBSolver as slv
+
 if DO_PLOTTING:
     import matplotlib as mpl, matplotlib.pyplot as plt
     import matplotlib.mlab as mlab
@@ -543,13 +552,15 @@ print('\n-------------------------------------------------------------\n')
 
 ### Lengths ###
 D_current_values = {}
-for length in L_variable_lengths[0]:
-    if (fixed_length + length) not in D_current_values: # July 08, important modification!
-        D_current_values[fixed_length + length] = 1
-    else:
-        D_current_values[fixed_length + length] += 1
-for to_add in L_variable_lengths[1:]:    
-    D_current_values = GetVertexAttribute(D_current_values,to_add)
+print(L_variable_lengths)
+if len(L_variable_lengths) >= 2: 
+    for length in L_variable_lengths[0]:
+        if (fixed_length + length) not in D_current_values: # July 08, important modification!
+            D_current_values[fixed_length + length] = 1
+        else:
+            D_current_values[fixed_length + length] += 1
+        for to_add in L_variable_lengths[1:]:    
+            D_current_values = GetVertexAttribute(D_current_values,to_add)
 
 L_lengths = sorted(D_current_values)
 L_counts = []

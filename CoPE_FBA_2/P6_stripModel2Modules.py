@@ -92,8 +92,9 @@ def addFBAobjective(model,reaction_id,objective='maximize'):
     r = model.getReaction(reaction_id)
     objective_flux = (1,reaction_id)
     objF = cbm.CBModel.Objective('max'+reaction_id,objective)
-    objF.createFluxObjectives([objective_flux])
     model.addObjective(objF, active=True)
+    objF.createFluxObjectives([objective_flux])
+    
     return model
 
 def addSpecies(model, species):
@@ -266,7 +267,10 @@ cytosol_abbrev = 'cytosol'
 cDir = os.path.dirname(os.path.abspath(os.sys.argv[0]))
     
 import os,copy,sys, numpy as np
-import pyscescbm as cbm
+
+# bgoli 2017-06-21
+# CBMPy compatability changes
+import cbmpy as cbm
 
 _HAVE_SYMPY_ = None
 try:
@@ -303,7 +307,7 @@ else:  # Try SBML L2
     
 cmod.setModifiedDate()
 cmod.addModelCreator('Timo','Maarleveld', 'CWI Amsterdam and VU University Amsterdam')
-cmod_original = copy.deepcopy(cmod)    
+cmod_original = cmod.clone()    
 
 if model_splitting:  
     cmod2 = cbm.CBTools.splitReversibleReactions(cmod)
@@ -327,7 +331,7 @@ for r in cmod.reactions:
            
 print("# Fixed reactions: {0:d}\n# Reversible reactions: {1:d}\n# Reversible reactions with -inf,inf bounds: {2:d}".format(len(cmod.reactions),n,m))
 
-cmod = copy.deepcopy(cmod_original)
+cmod = cmod_original.clone()
 nmodules = len(L_FluxModules)
 for i in range(nmodules):
     L_model_r_ids = cmod.getReactionIds()        
@@ -412,4 +416,4 @@ for i in range(nmodules):
         cmod.buildStoichMatrix(matrix_type='sympy')     
         cbm.CBWrite.writeModelHFormatFBA2(cmod, fname = "{0:s}.{1:d}.noinf".format(model_name,i+1), work_dir = os.path.join(subnetwork_dir,'h-format'), use_rational=True)        
     writeEFMToolInput(cmod2, fname = ("{0:s}.{1:d}_split.noinf".format(model_name,i+1)).replace('.','_'), work_dir = os.path.join(subnetwork_dir,'MATLAB'), use_rational=True)        
-    cmod = copy.deepcopy(cmod_original) # reset cmod object
+    cmod = cmod_original.clone() # reset cmod object

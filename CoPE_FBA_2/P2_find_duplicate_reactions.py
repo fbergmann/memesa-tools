@@ -70,9 +70,14 @@ data_dir = os.path.join(cDir, 'data', model_name)
 model_dir = os.path.join(data_dir,'models','sbml')
 work_dir = os.path.join(data_dir,'models','h-format')
 
-from pyscescbm.CBVersion import __DEBUG__, __version__
-from pyscescbm import CBRead, CBWrite, CBTools
-from pyscescbm import CBSolver as slv
+# bgoli 2017-06-21
+# CBMPy compatability changes
+import cbmpy
+__DEBUG__ = cbmpy.CBConfig.__CBCONFIG__['DEBUG']
+__version__ = cbmpy.CBConfig.current_version()
+
+from cbmpy import CBRead, CBWrite, CBTools
+from cbmpy import CBSolver as slv
 
 work_dir = os.path.join(cDir, work_dir)
 if not os.path.exists(work_dir):

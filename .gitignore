@@ -1,0 +1,13 @@
+/CoPE_FBA_2/P7_python_enumeration/temp
+/CoPE_FBA_2/analysis
+/CoPE_FBA_2/data
+/CoPE_FBA_2/*efa*
+*.pyc
+run*txt
+toy*txt
+*Copy*
+/CoPE_FBA_2/rational_fba/oneRational
+/CoPE_FBA_2/rational_fba/optTail
+/CoPE_FBA_2/rational_fba/template.cplex
+/CoPE_FBA_2/rational_fba/template2.cplex
+

@@ -11,7 +11,6 @@ User input:
 
 This scripts accepts both SBML L2 and L3 input files, but L3 are preferred.
 
-Script adapted from the MEMESA-TOOLS project.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,11 +25,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-(C) Timo R. Maarleveld, M.T. Wortel, B.G. Olivier, F.J. Bruggeman, and B. Teusink
+(C) B.G. Olivier, Timo R. Maarleveld, M.T. Wortel, F.J. Bruggeman, and B. Teusink
 
-Written by TR Maarleveld, B.G. Olivier Amsterdam, The Netherlands
-E-mail: t.r.maarleveld@cwi.nl
-Last Change: February 27, 2015
+Written by B.G. Olivier Amsterdam, TR Maarleveld, The Netherlands
+E-mail: b.g.olivier@vu.nl
+Last Change: Dec 18, 2017
 """
 
 from __future__ import division, print_function, absolute_import
@@ -39,7 +38,7 @@ from __future__ import division, print_function, absolute_import
 
 model_name = 'toy_model'
 inf_bound = 1000
-sbml_level = 3
+sbml_level = 2
 
 ### End userdata ####
 
@@ -69,7 +68,8 @@ for opt, arg in myopts:
 
 if model_name.endswith('.xml'):
     model_name = model_name.replace('.xml','')
-     
+    
+    
 # bgoli 2017-06-21
 # CBMPy compatability changes
 import cbmpy
@@ -83,52 +83,59 @@ from cbmpy import CBSolver as slv
 
 model_file = model_name + '.xml'
 data_dir = os.path.join(cDir, 'data', model_name)
-model_dir = os.path.join(data_dir,'models','sbml')
-work_dir2 = os.path.join(data_dir,'models','h-format')
+sbml_dir = os.path.join(data_dir,'models_subnetwork','sbml')
+output_dir = os.path.join(data_dir,'cope_fba','subnetworks','vertex')
+index_dir = os.path.join(data_dir,'models_subnetwork','h-format')
 
-if not os.path.exists(work_dir2):
-    os.makedirs(work_dir2)
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
 
-if sbml_level == 3:
-    print('Trying level 3')
-    cmod = CBRead.readSBML3FBC(model_file, work_dir=model_dir)
-else:
-    cmod = CBRead.readSBML2FBA(model_file, work_dir=model_dir)
+for f in os.listdir(sbml_dir):
+    if 'correct' in f:
+        submod = None
+        idmap = {}
+        F = open(os.path.join(index_dir, f.replace('.correct.xml', '.noinf_r.columns.txt')), 'r')
+        for l in F:
+            L = l.split(',')
+            print(L)
+            if len(L) == 2:
+                idmap[L[1].strip()] = int(L[0])+1
+        F.close()
+        print(idmap)
+        if sbml_level == 3:
+            print('Trying level 3')
+            submod = CBRead.readSBML3FBC(f, work_dir=sbml_dir)
+        else:
+            submod = CBRead.readSBML2FBA(f, work_dir=sbml_dir)
+        if submod is not None:
+            cbmpy.doFBA(submod)
+            a,b = cbmpy.doFVA(submod)
+            output = {}
+            for r in submod.reactions:
+                span = abs(r.fva_max - r.fva_min)
+                rtype = 'VARIABLE'
+                if span < 1e-10:
+                    rtype = 'FIXED'
+		if numpy.isinf(float(r.fva_max)): #EvP changed because of numpy.inf is not rational
+		    fva_max = float(999999)
+		else:
+		    fva_max = r.fva_max
+                S = 'x{} : {} : {} -- {}'.format(idmap[r.getId()], r.fva_min, fva_max, rtype)
+                print(S)
+                output[idmap[r.getId()]] = S 
+            if len(output) > 0:
+                kdx = list(output.keys())
+                kdx.sort()
+                outstr = ""
+                for i in kdx:
+                    outstr += '{}\n'.format(output[i])
+                print(outstr)
+                F = open(os.path.join(output_dir, f.replace('.correct.xml', '.noinf_r.ine.opt.fva')), 'w')
+                F.write(outstr)
+                F.close()
+                    
+                
+            
+                
 
-cmod.id = model_name
-print('\nAttempting to delete bounds for biomass reaction,', cmod.getActiveObjective().getFluxObjectiveReactions()[0])
-cmod.deleteBoundsForReactionId(cmod.getActiveObjective().getFluxObjectiveReactions()[0])
 
-mLP = slv.analyzeModel(cmod, return_lp_obj=True)
-CBWrite.printFBASolution(cmod)
-tmp_mid = cmod.id+'_cplex'
-
-CBTools.countedPause(1)
-
-cmod.id = tmp_mid
-
-print('\n{0:d}\n'.format(len(cmod.flux_bounds)) )
-cmod.changeAllFluxBoundsWithValue(inf_bound, 'Infinity')
-cmod.changeAllFluxBoundsWithValue(-inf_bound, '-Infinity')
-cmod.changeAllFluxBoundsWithValue(numpy.inf, 'Infinity')
-cmod.changeAllFluxBoundsWithValue(-numpy.inf, '-Infinity')
-
-print('\n{0:d}\n'.format(len(cmod.flux_bounds)) )
-slv.analyzeModel(cmod, lpFname=os.path.join(work_dir2, cmod.id), oldlpgen=False)
-
-cmod.id = cmod.id.replace('_cplex','')+'.noinf'
-print('\n{0:d}\n'.format(len(cmod.flux_bounds)) )
-cmod.deleteAllFluxBoundsWithValue('Infinity')
-cmod.deleteAllFluxBoundsWithValue('-Infinity')
-print('\n{0:d}\n'.format(len(cmod.flux_bounds)) )
-
-# We trust in SymPy to get the simplest representation of the rational by passing it a string!!!
-# this code bypasses CBMPy's input checking and casting ...
-for r_ in cmod.reactions:
-    for rr_ in r_.reagents:
-        rr_.coefficient = str(rr_.coefficient)
-for fb_ in cmod.flux_bounds:
-    fb_.value = str(fb_.value)
-
-cmod.buildStoichMatrix(matrix_type='sympy')
-CBWrite.exportModel(cmod, fmt='hformat', work_dir=work_dir2, use_rational=True)

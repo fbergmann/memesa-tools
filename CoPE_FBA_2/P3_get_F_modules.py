@@ -75,10 +75,14 @@ for opt, arg in myopts:
 if model_name.endswith('.xml'):
     model_name = model_name.replace('.xml','')
 
-from pyscescbm.CBVersion import __DEBUG__, __version__
-import pyscescbm.fluxmodules.fluxmodules as fmod
-from pyscescbm import CBRead, CBWrite, CBTools,CBMultiCore
-from pyscescbm import CBSolver as slv
+# bgoli 2017-06-21
+# CBMPy compatability changes
+import cbmpy
+__DEBUG__ = cbmpy.CBConfig.__CBCONFIG__['DEBUG']
+__version__ = cbmpy.CBConfig.current_version()
+import cbmpy.fluxmodules.fluxmodules as fmod
+from cbmpy import CBRead, CBWrite, CBTools,CBMultiCore
+from cbmpy import CBSolver as slv
 
 model_file = model_name + '.xml'
 data_dir = os.path.join(cDir, 'data', model_name)
@@ -117,3 +121,11 @@ else:
     
 lst_flux_modules = fmod.computeModules(cmod,tol=tolerance)    
 writeModule2CSV(lst_flux_modules)
+
+#import pandas as pd
+#result_df = pd.DataFrame(fva_dat, index = fva_names, columns = ["Reaction", "Reduced Costs", "Variability Min", 
+#                                                      "Variability Max", "abs(Max-Min)", "MinStatus", "MaxStatus"])
+#result_df.to_excel("result_df2.xlsx")
+
+
+

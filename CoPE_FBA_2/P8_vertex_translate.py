@@ -372,21 +372,21 @@ for file_in in os.listdir(work_dir):
 
             #  write vertex_array_full.csv
             if WRITE_VERTEX_ARRAY_FULL:
-                CBTools.exportLabelledLinkedList([vertex_arr_status], os.path.join(work_dir,'{0:s}.vertex_array_full.csv'.format(subnetwork_name) ), sep=',', format='%s', appendlist=False)
-                CBTools.exportLabelledLinkedList([vertex_arr_min], os.path.join(work_dir,'{0:s}.vertex_array_full.csv'.format(subnetwork_name) ), sep=',', format='%s', appendlist=True)
-                CBTools.exportLabelledLinkedList([vertex_arr_max], os.path.join(work_dir,'{0:s}.vertex_array_full.csv'.format(subnetwork_name) ), sep=',', format='%s', appendlist=True)
+                CBTools.exportLabelledLinkedList([vertex_arr_status], os.path.join(work_dir,'{0:s}.vertex_array_full.csv'.format(subnetwork_name) ), sep=',', fmt='%s', appendlist=False)
+                CBTools.exportLabelledLinkedList([vertex_arr_min], os.path.join(work_dir,'{0:s}.vertex_array_full.csv'.format(subnetwork_name) ), sep=',', fmt='%s', appendlist=True)
+                CBTools.exportLabelledLinkedList([vertex_arr_max], os.path.join(work_dir,'{0:s}.vertex_array_full.csv'.format(subnetwork_name) ), sep=',', fmt='%s', appendlist=True)
 
                 # write out chunks
                 cntr = 0
                 cntr2 = 2000
                 while cntr < len(vertList)-50 and cntr2 < len(vertList)-1:
-                    CBTools.exportLabelledLinkedList(vertList[cntr:cntr2], os.path.join(work_dir,'{0:s}.vertex_array_full.csv'.format(subnetwork_name) ), sep=',', format='%s', appendlist=True)
+                    CBTools.exportLabelledLinkedList(vertList[cntr:cntr2], os.path.join(work_dir,'{0:s}.vertex_array_full.csv'.format(subnetwork_name) ), sep=',', fmt='%s', appendlist=True)
                     cntr = cntr2
                     cntr2 += 2000
 
                 # write out the remaining bit
                 for x in range(cntr, len(vertList)):
-                    CBTools.exportLabelledLinkedList([vertList[x]], os.path.join(work_dir,'{0:s}.vertex_array_full.csv'.format(subnetwork_name) ), sep=',', format='%s', appendlist=True)            
+                    CBTools.exportLabelledLinkedList([vertList[x]], os.path.join(work_dir,'{0:s}.vertex_array_full.csv'.format(subnetwork_name) ), sep=',', fmt='%s', appendlist=True)            
                             
             #  write vertex_array.csv
             if WRITE_VERTEX_ARRAY:
@@ -419,8 +419,8 @@ for file_in in os.listdir(work_dir):
 
                 print('Variable fluxes:', len(VarFluxes))
                 print(VarFluxes)
-                CBTools.exportLabelledLinkedList([VarFluxes], os.path.join(work_dir,'{0:s}.vertex_variable_fluxes.csv'.format(subnetwork_name) ), sep=',', format='%s', appendlist=False)
-                CBTools.exportLabelledLinkedList([list(FLUX_NAMES), BoolRes.tolist()], os.path.join(work_dir,'{0:s}.vertex_variable_fluxes_all.csv'.format(subnetwork_name) ), sep=',', format='%s', appendlist=False)
+                CBTools.exportLabelledLinkedList([VarFluxes], os.path.join(work_dir,'{0:s}.vertex_variable_fluxes.csv'.format(subnetwork_name) ), sep=',', fmt='%s', appendlist=False) # EvP changed format into fmt
+                CBTools.exportLabelledLinkedList([list(FLUX_NAMES), BoolRes.tolist()], os.path.join(work_dir,'{0:s}.vertex_variable_fluxes_all.csv'.format(subnetwork_name) ), sep=',', fmt='%s', appendlist=False)# EvP changed format into fmt
 
 
         TIME_END = time.time()        

@@ -486,6 +486,8 @@ def getVariableNetworkStats():
     D_stats['maxSAF'] = maxSumAbsFluxes
     D_stats['minC'] = minCost
     D_stats['maxC'] = maxCost
+
+
     return D_IO,L_variable_lengths,L_variable_sumAbsFluxes, L_variable_costs,nvertices_network,D_stats
 
 # bgoli 2017-06-21

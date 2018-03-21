@@ -121,3 +121,11 @@ else:
     
 lst_flux_modules = fmod.computeModules(cmod,tol=tolerance)    
 writeModule2CSV(lst_flux_modules)
+
+#import pandas as pd
+#result_df = pd.DataFrame(fva_dat, index = fva_names, columns = ["Reaction", "Reduced Costs", "Variability Min", 
+#                                                      "Variability Max", "abs(Max-Min)", "MinStatus", "MaxStatus"])
+#result_df.to_excel("result_df2.xlsx")
+
+
+

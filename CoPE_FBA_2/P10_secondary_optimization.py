@@ -92,7 +92,7 @@ if cmod == None:
 cmod.buildStoichMatrix()
 
 L_r_ids = cmod.getReactionIds()
-lp = cbm.CBSolver.cplx_MinimizeSumOfAbsFluxes(cmod,selected_reactions = L_r_ids) 
+lp = cbm.doFBAMinSum(cmod,selected_reactions = L_r_ids) 
     
 L_minSumAbsFluxes = []
 for r in cmod.reactions:
@@ -107,7 +107,7 @@ if USE_PROTEIN_COSTS:
     cost_dir = os.path.join(data_dir,'protein_costs')    
     for cost_str in L_protein_costs:        
         D_protein_costs = tools.getProteinCosts('{0:s}.{1:s}'.format(model_name.split('.')[0],cost_str),cost_dir) 
-        lp = cbm.CBSolver.cplx_MinimizeSumOfAbsFluxes(cmod,objective_coefficients=D_protein_costs,selected_reactions = L_r_ids)        
+        lp = cbm.doFBAMinSums(cmod,objective_coefficients=D_protein_costs,selected_reactions = L_r_ids)        
         L_minCost = []
         for r in cmod.reactions:
             L_minCost.append((r.getPid(), round(r.getValue(),roundto)))     

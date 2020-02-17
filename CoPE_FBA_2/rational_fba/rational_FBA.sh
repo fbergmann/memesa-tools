@@ -11,6 +11,12 @@ Last Change: July 22, 2014
 '
 
 STARTTIME=$(date +%s)
+ESOLVER=esolver
+
+if [[ -d /Applications ]]
+then
+  ESOLVER=esolver-mac
+fi
 
 # I assume that this jar file is in the current directory, if you use
 # a newer version of JLinAlg then this will need to be updated
@@ -58,7 +64,7 @@ cat template.cplex | sed "s/obj: slack/obj: $OPSTRING/" > template2.cplex
 
 rm unnamed.sol >/dev/null 2>/dev/null
 
-./esolver -O -L template2.cplex >/dev/null 2>/dev/null
+./$ESOLVER -O -L template2.cplex >/dev/null 2>/dev/null
 
 grep 'Value' unnamed.sol
 OPTIMUM=`grep 'Value' unnamed.sol | gawk '{ print $3 }'`
